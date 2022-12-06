@@ -1,0 +1,24 @@
+{
+    "name": "elegance/base",
+    "description": "Servidor backend para apliações Elegance",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "André Ricardo",
+            "email": "contatoadmx@gamil.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "": "class/"
+        },
+        "files": [
+            "helper/script/env.php"
+        ]
+    },
+    "require": {
+        "elegance/core": "dev-main",
+        "elegance/mxcmd": "dev-main"
+    },
+    "minimum-stability": "dev"
+}
