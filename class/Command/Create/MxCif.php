@@ -3,8 +3,8 @@
 namespace Command\Create;
 
 use Elegance\File;
+use Elegance\Instance\Cif;
 use Elegance\MxCmd;
-use Elegance\InstanceCif;
 use Exception;
 
 abstract class MxCif extends MxCmd
@@ -22,7 +22,7 @@ abstract class MxCif extends MxCmd
         if (File::check($fileName))
             throw new Exception("Certificado [$name] já existe");
 
-        $allowChar = InstanceCif::BASE;
+        $allowChar = Cif::BASE;
 
         $content = [];
         while (count($content) < 63) {
