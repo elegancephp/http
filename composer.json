@@ -13,6 +13,7 @@
             "": "class/"
         },
         "files": [
+            "helper/constant/request_method.php",
             "helper/script/env.php"
         ]
     },
