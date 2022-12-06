@@ -2,6 +2,8 @@
 
 namespace Elegance;
 
+use Elegance\Instance\Code as InstanceCode;
+
 abstract class Code
 {
     /** InstanceCode com chave padrão */

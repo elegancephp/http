@@ -1,8 +1,8 @@
 <?php
 
-namespace Elegance;
+namespace Elegance\Instance;
 
-class InstanceCode
+class Code
 {
     protected string $strKey;
     protected string $preKey;

@@ -1,10 +1,12 @@
 <?php
 
-namespace Elegance;
+namespace Elegance\Instance;
 
+use Elegance\File;
+use Elegance\Import;
 use Error;
 
-class InstanceCif
+class Cif
 {
     protected array $cif;
     protected array $ensure;
@@ -21,7 +23,7 @@ class InstanceCif
             File::ensure_extension($certificate, 'crt');
             $certificate = path($certificate);
         } else {
-            $certificate = (dirname(__DIR__, 2) . '/library/certificate/base.crt');
+            $certificate = (dirname(__DIR__, 3) . '/library/certificate/base.crt');
         }
 
         if (!File::check($certificate))

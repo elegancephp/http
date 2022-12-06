@@ -2,6 +2,8 @@
 
 namespace Elegance;
 
+use Elegance\Instance\Cif as InstanceCif;
+
 abstract class Cif
 {
     /** InstanceCif com chave padrão */
