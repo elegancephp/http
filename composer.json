@@ -1,5 +1,5 @@
 {
-    "name": "elegance/base",
+    "name": "elegance/backend",
     "description": "Servidor backend para apliações Elegance",
     "license": "MIT",
     "authors": [
@@ -13,6 +13,8 @@
             "": "class/"
         },
         "files": [
+            "helper/constant/ex_mimetype.php",
+            "helper/constant/http_code.php",
             "helper/constant/request_method.php",
             "helper/function/url.php",
             "helper/script/env.php"
