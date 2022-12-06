@@ -1,6 +1,6 @@
 # elegance/backend
 
-Servidor backend para apliações Elegance
+Servidor backend para aplicações Elegance
 
     composer require elegance/backend
     
