@@ -10,3 +10,6 @@ Env::default('CODE_KEY', 'elegnace');
 
 
 Env::default('RELATIVE_METHOD', true);
+
+
+Env::default('RESPONSE_CACHE', 672);
