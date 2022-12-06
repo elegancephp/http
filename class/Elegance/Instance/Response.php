@@ -1,6 +1,6 @@
 <?php
 
-namespace Elegance;
+namespace Elegance\Instance;
 
 use Elegance\File;
 

@@ -1,0 +1,14 @@
+[#PHP]
+
+namespace [#namespace];
+
+use Closure;
+use Elegance\Interface\Middleware;
+
+class [#class] implements Middleware
+{
+    function __invoke(Closure $next)
+    {
+        return $next();
+    }
+}
