@@ -19,6 +19,7 @@ abstract class Router
 
     protected static array $routes = [];
     protected static array $prefixAction = [];
+    protected static array $status = [];
 
     /** Adiciona uma rota */
     static function add($route, $response)
@@ -59,6 +60,27 @@ abstract class Router
             $result->send();
 
         return $result;
+    }
+
+    /** Rotas que devem ser executadas em caso de status HTTP */
+    static function status($status, $response)
+    {
+        if (is_array($status)) {
+            foreach ($status as $STS)
+                self::status($STS, $response);
+            return;
+        }
+        self::$status[$status] = $response;
+    }
+
+    /** Retorna a resposta padrãp de um status HTTP */
+    protected static function getResponseStatus(int $status)
+    {
+        if (isset(self::$status[$status]))
+            return self::$status[$status];
+
+        if ($status >= 400 && $status <= 599)
+            return self::$status[0] ?? null;
     }
 
     /** Retorna o template registrado que corresponde a URL atual */

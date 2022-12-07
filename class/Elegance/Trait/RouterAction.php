@@ -56,8 +56,14 @@ trait RouterAction
         }
 
 
-        if (is_int($response))
+        if (is_int($response)) {
+
+            $responseStatus = self::getResponseStatus($response);
+            if ($responseStatus)
+                return self::getAction($responseStatus);
+
             return fn () => self::action_int($response);
+        }
 
         if (is_closure($response))
             return fn () => self::action_closure($response);
