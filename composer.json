@@ -17,7 +17,8 @@
             "helper/constant/http_code.php",
             "helper/constant/request_method.php",
             "helper/function/url.php",
-            "helper/script/env.php"
+            "helper/script/env.php",
+            "helper/script/router_action.php"
         ]
     },
     "require": {
