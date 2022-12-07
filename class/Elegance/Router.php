@@ -50,10 +50,11 @@ abstract class Router
 
             $result = new Response($result);
         } catch (Exception | Error $e) {
+
             $result = new Response;
             $result->status($e->getCode() ? $e->getCode() : STS_INTERNAL_SERVER_ERROR);
-            $result->header('ELEGANCE-ERROR-CODE', $e->getCode());
-            $result->header('ELEGANCE-ERROR-MESSAGE', $e->getMessage());
+            $result->header('Elegance-Error-Code', $e->getCode());
+            $result->header('Elegance-Error-Message', remove_accents($e->getMessage()));
         }
 
         if ($autosend)
