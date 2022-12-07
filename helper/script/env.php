@@ -18,3 +18,8 @@ Env::default('RESPONSE_CACHE', 672);
 Env::default('PATH_VIEW', 'view');
 
 Env::default('VIEW_MINIFY', true);
+
+
+Env::default('SESSION_TIME', 672);
+
+Env::default('COOKIE_TIME', Env::get('SESSION_TIME'));
