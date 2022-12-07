@@ -20,6 +20,9 @@ trait RouterAction
     static function actionPrefix($prefix, Closure $action, bool $finalAction = false)
     {
         self::$prefix[$prefix] = [$action, $finalAction];
+        uksort(self::$prefix, function ($a, $b) {
+            return strlen($a) <=> strlen($b);
+        });
     }
 
     protected static function getAction($response, bool $usePrefix = true): callable
