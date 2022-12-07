@@ -1,6 +1,6 @@
 {
-    "name": "elegance/backend",
-    "description": "Servidor backend para aplicações Elegance",
+    "name": "elegance/http",
+    "description": "Ferramentas para criação de aplicações http",
     "license": "MIT",
     "authors": [
         {

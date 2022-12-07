@@ -1,8 +1,8 @@
-# elegance/backend
+# elegance/http
 
-Servidor backend para aplicações Elegance
+Ferramentas para criação de aplicações http
 
-    composer require elegance/backend
+    composer require elegance/http
     
     php ./vendor/elegance/mxcmd/install
     
