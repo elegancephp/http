@@ -17,7 +17,7 @@ trait RouterAction
     protected static array $prefix = [];
 
     /** Adiciona um prefixo para tratamento de rotas */
-    static function actionPrefix($prefix, Closure $action, bool $finalAction = false)
+    static function actionPrefix($prefix, Closure $action, bool $finalAction)
     {
         self::$prefix[$prefix] = [$action, $finalAction];
         uksort(self::$prefix, function ($a, $b) {

@@ -2,14 +2,26 @@
 
 use Elegance\Router;
 
-Router::actionPrefix('>', function ($reponse) {
-    return redirect($reponse);
-}, true);
+Router::actionPrefix(
+    '>',
+    fn ($response) => redirect($response),
+    true
+);
 
-Router::actionPrefix('#', function ($reponse) {
-    return prepare($reponse, Router::data());
-}, true);
+Router::actionPrefix(
+    '#',
+    fn ($response) => prepare($response, Router::data()),
+    true
+);
 
-Router::actionPrefix('@', function ($reponse) {
-    return "controller.$reponse";
-});
+Router::actionPrefix(
+    '&',
+    fn ($response) => view($response, Router::data()),
+    true
+);
+
+Router::actionPrefix(
+    '@',
+    fn ($response) => "controller.$response",
+    false
+);

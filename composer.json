@@ -16,10 +16,13 @@
             "helper/constant/ex_mimetype.php",
             "helper/constant/http_code.php",
             "helper/constant/request_method.php",
+            "helper/function/minify.php",
             "helper/function/redirect.php",
             "helper/function/url.php",
+            "helper/function/view.php",
             "helper/script/env.php",
-            "helper/script/router_action.php"
+            "helper/script/router_action.php",
+            "helper/script/view_prepare.php"
         ]
     },
     "require": {
