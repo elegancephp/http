@@ -27,8 +27,7 @@
         ]
     },
     "require": {
-        "elegance/core": "dev-main",
-        "elegance/mxcmd": "dev-main"
-    },
-    "minimum-stability": "dev"
+        "elegance/core": "^1.0",
+        "elegance/mxcmd": "^1.0"
+    }
 }
