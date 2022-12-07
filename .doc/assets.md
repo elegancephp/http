@@ -16,6 +16,6 @@ Cria respostas para arquivos fisicos
 
 ---
 
-**get**: Retorna o arquivo de [resposta](https://github.com/elegancephp/server/tree/main/.doc/response.md) de um arquivo assets
+**get**: Retorna o arquivo de [resposta](https://github.com/elegancephp/http/tree/main/.doc/response.md) de um arquivo assets
 
     Assets::get(string $path, array $allowTypes = []): Response

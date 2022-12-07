@@ -1,6 +1,6 @@
 ### Helper funcion
 
-**url**: Retorna uma [URL](https://github.com/elegancephp/server/tree/main/.doc/url.md)
+**url**: Retorna uma [URL](https://github.com/elegancephp/http/tree/main/.doc/url.md)
 
     url(): String
 
@@ -10,7 +10,7 @@
 
     redirect(...): never
 
-**redirectResponse**: Retorna um objeto de [resposta](https://github.com/elegancephp/server/tree/main/.doc/response.md) com um redirecionamento
+**redirectResponse**: Retorna um objeto de [resposta](https://github.com/elegancephp/http/tree/main/.doc/response.md) com um redirecionamento
 
     redirectResponse(...): Response
 
@@ -30,10 +30,10 @@
 
 ---
 
-**view**: Retorna a string do conteúdo de uma [view](https://github.com/elegancephp/server/tree/main/.doc/view.md)
+**view**: Retorna a string do conteúdo de uma [view](https://github.com/elegancephp/http/tree/main/.doc/view.md)
 
     view(string $viewRef, array|string $prepare = []): String
 
-**viewIn**: Retorna a string do conteúdo de uma view dentro da [view](https://github.com/elegancephp/server/tree/main/.doc/view.md) original
+**viewIn**: Retorna a string do conteúdo de uma view dentro da [view](https://github.com/elegancephp/http/tree/main/.doc/view.md) original
 
     viewIn(string $viewRef, array|string $prepare = []): String
