@@ -5,7 +5,7 @@ use Elegance\Instance\Response;
 if (!function_exists('redirect')) {
 
     /** Redireciona o backend para uma url */
-    function redirect()
+    function redirect(): never
     {
         redirectResponse(...func_get_args())
             ->send();
