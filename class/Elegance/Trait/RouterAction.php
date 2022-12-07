@@ -31,10 +31,8 @@ trait RouterAction
             if ($usePrefix) {
                 foreach (self::$prefix as $prefix => $action) {
                     if (str_starts_with($response, $prefix)) {
-
                         list($action, $finalAction) = $action;
                         $response = substr($response, strlen($prefix));
-
                         return $finalAction ?
                             fn () => $action($response) :
                             self::getAction($action($response), false);

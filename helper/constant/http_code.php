@@ -10,6 +10,10 @@ define('STS_CREATED', 201);
 define('STS_NOT_CONTENT', 204);
 
 
+/** Redirecionamento */
+define('STS_REDIRECT', 303);
+
+
 /** Sintaxe intorreta */
 define('STS_BAD_REQUEST', 400);
 
