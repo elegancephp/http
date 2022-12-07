@@ -1,6 +1,6 @@
 <?php
 
-namespace Command;
+namespace Terminal;
 
 use Elegance\File;
 use Elegance\MxCmd;

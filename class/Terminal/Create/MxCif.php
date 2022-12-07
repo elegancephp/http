@@ -1,6 +1,6 @@
 <?php
 
-namespace Command\Create;
+namespace Terminal\Create;
 
 use Elegance\File;
 use Elegance\Instance\Cif;
