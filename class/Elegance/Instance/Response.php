@@ -59,6 +59,9 @@ class Response
         $type = strtolower($type);
         $type = EX_MIMETYPE[$type] ?? $type;
 
+        if (!substr_count(strtolower($type), 'charset='))
+            $type = "$type; charset=utf-8";
+
         $this->type = $type;
 
         return $this;
