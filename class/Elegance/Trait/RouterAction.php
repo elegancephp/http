@@ -99,7 +99,7 @@ trait RouterAction
 
     protected static function action_className($response, $method = null)
     {
-        $params = Router::data();
+        $params = [];
 
         if (method_exists($response, '__construct'))
             $params = self::getUseParams(new ReflectionMethod($response, '__construct'));
