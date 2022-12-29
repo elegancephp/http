@@ -32,4 +32,20 @@ Cria respostas para a requisição atual
     
     $resp->send(?int $status = null): never
     
+**getStatus**: Retorna o status HTTP da resposta
+    
+    $resp->getStatus(?int $status): static
+
+**getHeader**: Retorna um ou todos os cabeçalhos da resposta
+    
+    $resp->getHeader(?string $name = null): array
+
+**getType**: Retorna o contentType da resposta
+    
+    $resp->getType(): ?string
+
+**getContent**: Retorna o conteúdo da resposta
+    
+    $resp->getContent(): mixed
+    
 > Caso o conteúdo da resposta for um objeto que contenha o metodo **send**, o conteúdo enviado será a resposta do metodo **send** do objeto.

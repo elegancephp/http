@@ -27,7 +27,7 @@ class Response
 
     function __toString()
     {
-        return $this->getContent();
+        return $this->getMontedContent();
     }
 
     /** Define o status HTTP da resposta */
@@ -94,14 +94,42 @@ class Response
         return $this;
     }
 
+    /** Retorna o status HTTP da resposta */
+    function getStatus(?int $status): static
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    /** Retorna um ou todos os cabeçalhos da resposta */
+    function getHeader(?string $name = null): array
+    {
+        if (!is_null($name))
+            return $this->header[$name] ?? null;
+
+        return $this->header;
+    }
+
+    /** Retorna o contentType da resposta */
+    function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    /** Retorna o conteúdo da resposta */
+    function getContent(): mixed
+    {
+        return $this->content;
+    }
+
     /** Envia a resposta finalizando a aplicação */
     function send(?int $status = null): never
     {
         if (is_class($this->content, Response::class))
             $this->content->send($status);
 
-        $content = $this->getContent();
-        $headers = $this->getHeders();
+        $content = $this->getMontedContent();
+        $headers = $this->getMontedHeders();
 
         http_response_code($status ?? $this->status ?? STS_OK);
 
@@ -112,28 +140,28 @@ class Response
     }
 
     /** Retorna conteúdo da resposta */
-    protected function getContent(): string
+    protected function getMontedContent(): string
     {
         return match (true) {
-            is_class($this->content, Response::class) => $this->content->getContent(),
+            is_class($this->content, Response::class) => $this->content->getMontedContent(),
             is_array($this->content) => json_encode($this->content),
             default => strval($this->content)
         };
     }
 
     /** Retorna cabeçalhos de resposta */
-    protected function getHeders(): array
+    protected function getMontedHeders(): array
     {
         return [
             ...$this->header,
-            ...$this->getHeader_Cache(),
-            ...$this->getHeader_type(),
-            ...$this->getHeader_Download()
+            ...$this->getMontedHeader_Cache(),
+            ...$this->getMontedHeader_type(),
+            ...$this->getMontedHeader_Download()
         ];
     }
 
     /** Retorna cabeçalhos de cache */
-    protected function getHeader_Cache(): array
+    protected function getMontedHeader_Cache(): array
     {
         $headerCache = [];
 
@@ -159,13 +187,13 @@ class Response
     }
 
     /** Retorna cabeçalhos de tipo de conteúdo */
-    protected function getHeader_type(): array
+    protected function getMontedHeader_type(): array
     {
         return ['Content-Type' => $this->type ?? EX_MIMETYPE['html']];
     }
 
     /** Retorna cabeçalhos de download */
-    protected function getHeader_Download(): array
+    protected function getMontedHeader_Download(): array
     {
         $headerDownload = [];
 
