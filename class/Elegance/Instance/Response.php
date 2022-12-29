@@ -8,9 +8,9 @@ class Response
 {
     protected array $header = [];
 
-    protected ?int $status;
-    protected ?string $type;
-    protected mixed $content;
+    protected ?int $status = null;
+    protected ?string $type = null;
+    protected mixed $content = null;
 
     protected null|int|bool $cache = 0;
 
@@ -19,10 +19,20 @@ class Response
 
     function __construct(mixed $content = null, ?int $status = null,  array $header = [])
     {
+        if (is_class($content, static::class)) {
+            $this->header = $content->header;
+            $this->status = $content->status;
+            $this->type = $content->type;
+            $this->content = $content->content;
+            $this->cache = $content->cache;
+            $this->download = $content->download;
+            $this->downloadName = $content->downloadName;
+        } else {
+            $this->content($content);
+        }
         $this->status($status);
         $this->header($header);
         $this->type(null);
-        $this->content($content);
     }
 
     function __toString()
@@ -33,7 +43,7 @@ class Response
     /** Define o status HTTP da resposta */
     function status(?int $status): static
     {
-        $this->status = $status;
+        $this->status = $status ?? $this->status;
         return $this;
     }
 
@@ -53,17 +63,16 @@ class Response
     /** Define o contentType da resposta */
     function type(?string $type): static
     {
-        $type = $type ?? 'html';
+        if ($type) {
+            $type = trim($type, '.');
+            $type = strtolower($type);
+            $type = EX_MIMETYPE[$type] ?? $type;
 
-        $type = trim($type, '.');
-        $type = strtolower($type);
-        $type = EX_MIMETYPE[$type] ?? $type;
+            if (!substr_count(strtolower($type), 'charset='))
+                $type = "$type; charset=utf-8";
 
-        if (!substr_count(strtolower($type), 'charset='))
-            $type = "$type; charset=utf-8";
-
-        $this->type = $type;
-
+            $this->type = $type;
+        }
         return $this;
     }
 
