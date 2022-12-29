@@ -26,6 +26,6 @@ abstract class MxServer extends MxCmd
         MxCmd::show('-------------------------------------------------');
         MxCmd::show('');
 
-        echo shell_exec("php -S 0.0.0.0:$port $file");
+        echo shell_exec("php -S 127.0.0.1:$port $file");
     }
 }
