@@ -55,16 +55,6 @@ trait RouterAction
             $response = STS_NOT_IMPLEMENTED;
         }
 
-
-        if (is_int($response)) {
-
-            $responseStatus = self::getResponseStatus($response);
-            if ($responseStatus)
-                return self::getAction($responseStatus);
-
-            return fn () => self::action_int($response);
-        }
-
         if (is_closure($response))
             return fn () => self::action_closure($response);
 
@@ -77,14 +67,6 @@ trait RouterAction
     protected static function action_string($response)
     {
         return new Response(prepare($response, self::data()));
-    }
-
-    protected static function action_int($response)
-    {
-        if ($response >= 200 && $response < 600)
-            $response = (new Response())->status($response);
-
-        return $response;
     }
 
     protected static function action_closure($response)
