@@ -14,3 +14,6 @@ define('IS_PATCH', !IS_TERMINAL && $_SERVER['REQUEST_METHOD'] == 'PATCH');
 
 /** Se a requisição é do tipo DELETE */
 define('IS_DELETE', !IS_TERMINAL && $_SERVER['REQUEST_METHOD'] == 'DELETE');
+
+/** Se a requisição é do tipo OPTIONS */
+define('IS_OPTIONS', !IS_TERMINAL && $_SERVER['REQUEST_METHOD'] == 'OPTIONS');

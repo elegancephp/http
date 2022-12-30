@@ -39,3 +39,5 @@
 **IS_PATCH**: Se a requisição é do tipo PATCH
 
 **IS_DELETE**: Se a requisição é do tipo DELETE
+
+**IS_OPTIONS**: Se a requisição é do tipo OPTIONS
