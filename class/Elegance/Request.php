@@ -75,7 +75,7 @@ abstract class Request
     {
         self::$query = self::$query ?? self::current_query();
 
-        if (func_num_args())
+        if (func_num_args() == 1)
             return self::$query[func_get_arg(0)] ?? null;
 
         return self::$query;
@@ -103,6 +103,26 @@ abstract class Request
         return self::$files;
     }
 
+    /** Define/Altera um cabeçalho da requisição atual */
+    static function setHeader(string $name, mixed $value): void
+    {
+        self::$header = self::$header ?? self::current_header();
+        self::$header[$name] = $value;
+    }
+
+    /** Define/Altera um dos dados passados via QUERY GET na requisiçaõ atual */
+    static function setQuery(string $name, mixed $value): void
+    {
+        self::$query = self::$query ?? self::current_query();
+        self::$query[$name] = $value;
+    }
+
+    /** Define/Altera um  dos dados enviados no corpo da requisição atual */
+    static function setData(string $name, mixed $value): void
+    {
+        self::$data = self::$data ?? self::current_data();
+        self::$data[$name] = $value;
+    }
 
     protected static function current_method(): string
     {

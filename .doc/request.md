@@ -36,8 +36,6 @@ Gerencia a requisição atual
 
 ---
 
----
-
 **query**: Retorna um ou todos os dados passados na QUERY GET da requisição atual
 
     Request::query(): mixed
@@ -53,3 +51,22 @@ Gerencia a requisição atual
 **file**: Retorna um o todos os arquivos enviados na requisição atual
 
     Request::file(): array
+
+---
+
+**setHeader**: Define/Altera um cabeçalho da requisição atual
+    
+    setHeader(string $name, mixed $value): void
+    
+---
+
+**setQuery**: Define/Altera um dos dados passados via QUERY GET na requisiçaõ atual
+    
+    setQuery(string $name, mixed $value): void
+    
+---
+
+**setData**: Define/Altera um  dos dados enviados no corpo da requisição atual
+    
+    setData(string $name, mixed $value): void
+    
