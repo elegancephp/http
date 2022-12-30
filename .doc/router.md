@@ -17,6 +17,14 @@ Para resolver as rotas, utilize o metodo **solve**
 
     Router::solve();
 
+### Import
+Pode-se importar arquivos de rota para facilitar a organização
+
+    Router::import(['file1', 'file2', ...], $path)
+
+Os arquivos serão importados de dentro do diretório $path
+Caso o diretório $path não seja especificado, sera utilizado a variavel de ambiente PATH_ROUTE
+
 ### Template
 O template é a forma como a rota será encontrada na URL.
 

@@ -75,4 +75,17 @@ abstract class Router
 
         return null;
     }
+
+    /** Importa arquivos de rota */
+    protected static function import(string|array $files, ?string $path = null): void
+    {
+        $files = is_array($files) ? $files : [$files];
+
+        $path = $path ??  env('PATH_ROUTE');
+
+        foreach ($files as $file) {
+            $file = str_replace('.', '/', $file);
+            Import::return("$path/$file");
+        }
+    }
 }

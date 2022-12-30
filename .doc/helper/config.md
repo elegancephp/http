@@ -21,3 +21,5 @@
 **PATH_VIEW**: Diretório onde se encontra as views
 
 **VIEW_MINIFY**: Se o conteúdo das VIEWs deve ser minificado
+
+**PATH_ROUTE**: Diretório para os arquivos de rota
