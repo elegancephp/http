@@ -1,6 +1,6 @@
 <?php
 
-namespace Terminal\Create;
+namespace Terminal;
 
 use Elegance\File;
 use Elegance\Import;
@@ -39,7 +39,7 @@ abstract class MxMiddleware extends MxCmd
             'PHP' => '<?php'
         ];
 
-        $base = path(dirname(__DIR__, 3) . '/library/template/mx-create-middleware.txt');
+        $base = path(dirname(__DIR__, 2) . '/library/template/mx-create-middleware.txt');
 
         $content = Import::content($base, $prepare);
 

@@ -12,6 +12,6 @@
 
 ---
 
-**crate middleware**: Cria um arquivo de middleware dentro do namespace **Middleware**
+**middleware**: Cria um arquivo de middleware dentro do namespace **Middleware**
 
-    php mx create.middleware [nomeDaMiddleware]
+    php mx middleware [nomeDaMiddleware]
