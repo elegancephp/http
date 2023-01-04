@@ -3,7 +3,6 @@
 namespace Elegance;
 
 use Closure;
-use Elegance\Interface\Middleware as InterfaceMiddleware;
 
 abstract class Middleware
 {
@@ -25,6 +24,8 @@ abstract class Middleware
         foreach (self::$queue as $pos => $middleware)
             if ($middleware == $name)
                 unset(self::$queue[$pos]);
+
+        self::$queue = array_values(self::$queue);
     }
 
     /** Registra uma middleware para ser chamada via string */
@@ -83,7 +84,7 @@ abstract class Middleware
             if (class_exists($className))
                 $middleware = new $className;
 
-            if (!is_implement($middleware, InterfaceMiddleware::class))
+            if (!is_closure($middleware))
                 $middleware = null;
         }
 

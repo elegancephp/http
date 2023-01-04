@@ -3,9 +3,8 @@
 namespace [#namespace];
 
 use Closure;
-use Elegance\Interface\Middleware;
 
-class [#class] implements Middleware
+class [#class]
 {
     function __invoke(Closure $next)
     {
