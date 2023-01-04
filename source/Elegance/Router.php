@@ -2,6 +2,7 @@
 
 namespace Elegance;
 
+use Elegance\Instance\Response;
 use Elegance\Trait\RouterAction;
 use Elegance\Trait\RouterData;
 use Elegance\Trait\RouterMiddleware;
@@ -21,10 +22,6 @@ abstract class Router
     {
         $map = Dir::seek_for_all($path, true);
 
-        $middlewares = [];
-        $routes = [];
-        $error = [];
-
         foreach ($map as $file) {
             if (str_ends_with($file, '.php')) {
                 $item = substr($file, 0, -4);
@@ -34,10 +31,7 @@ abstract class Router
                 $item = str_replace(['_index'], '', $item);
                 $item = str_replace_all(['//'], '/', $item);
 
-                if (str_ends_with($item, '_error')) {
-                    $item = substr($item, 0, -6) . '...';
-                    // IMPLEMENTAR ERROR
-                } else if (str_ends_with($item, '_')) {
+                if ($item == '_') {
                     $item = substr($item, 0, -1) . '...';
                     self::middleware($item, "=$file");
                 } else {
@@ -45,12 +39,6 @@ abstract class Router
                 }
             }
         }
-
-        jsonFile('map', [
-            'middlewares' => $middlewares,
-            'routes' => $routes,
-            'error' => $error,
-        ]);
     }
 
     /** Adiciona uma rota */
@@ -68,30 +56,24 @@ abstract class Router
     {
         self::organize(self::$routes);
 
-        jsonFile('route_solve', [
-            'routes' => array_keys(self::$routes),
-            'middlewares' => self::$middlewares
-        ]);
-
         $templateMatch = self::getTemplateMatch();
 
-        list($params, $response) = self::$routes[$templateMatch] ?? [null, STS_NOT_FOUND];
+        list($routeParams, $routeResponse) = self::$routes[$templateMatch] ?? [null, STS_NOT_FOUND];
 
-        self::setParamnsData($templateMatch, $params);
+        self::setParamnsData($templateMatch, $routeParams);
 
         self::setMiddlewares();
 
-        $action = self::getAction($response);
+        $action = self::getAction($routeResponse);
 
-        $result = Middleware::run($action);
+        $response = Middleware::run($action);
 
-        jsonFile('result', [
-            'template' => $templateMatch,
-            'data' => self::data(),
-            'middleware' => Middleware::queue()
-        ]);
+        $response = new Response($response);
 
-        dd($result);
+        if ($autoSend)
+            $response->send();
+
+        return $response;
     }
 
     /** Retorna o template registrado que corresponde a URL atual */
