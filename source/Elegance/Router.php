@@ -53,6 +53,13 @@ abstract class Router
         self::$routes[$template] = [$params, $response];
     }
 
+    /** Adiciona uma rota em um metodo de requisição */
+    static function addIn(string $method, $route, $response)
+    {
+        if (Request::method() == strtoupper($method))
+            self::add(...func_get_args());
+    }
+
     /** Executa a rota correspondente a URL atual */
     static function solve($autoSend = true)
     {
