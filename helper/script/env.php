@@ -5,9 +5,6 @@ use Elegance\Env;
 Env::default('SERVER_PORT', 8081);
 
 
-Env::default('RELATIVE_METHOD', true);
-
-
 Env::default('RESPONSE_CACHE', 672);
 
 

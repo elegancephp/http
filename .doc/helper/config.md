@@ -3,8 +3,6 @@
 **SERVER_PORT**: Porta pardão para servidor embutido
 
 
-**RELATIVE_METHOD**: Se o metodo relativo deve ser utilizado
-
 **FORCE_SSL**: Força a requisição a se comportar com um status especifico de SSL
 
 

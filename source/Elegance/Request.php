@@ -5,7 +5,6 @@ namespace Elegance;
 abstract class Request
 {
     protected static $method;
-    protected static $relativeMethod;
 
     protected static $header;
 
@@ -20,16 +19,10 @@ abstract class Request
     protected static $files;
 
     /** Retorna o metodo interpretado da requisição atual */
-    static function method(bool $relative = true): string
+    static function method(): string
     {
-        if ($relative) {
-            self::$relativeMethod = self::$relativeMethod ?? self::current_relativeMethod();
-
-            return self::$relativeMethod;
-        } else {
-            self::$method = self::$method ?? self::current_method();
-            return self::$method;
-        }
+        self::$method = self::$method ?? self::current_method();
+        return self::$method;
     }
 
     /** Retorna um ou todos os cabeçalhos da requisição atual */
@@ -127,17 +120,6 @@ abstract class Request
     protected static function current_method(): string
     {
         return strtoupper($_SERVER['REQUEST_METHOD'] ?? 'TERMINAL');
-    }
-
-    protected static function current_relativeMethod(): string
-    {
-        if (env('RELATIVE_METHOD') && IS_POST && self::data('_method')) {
-            $method = strtoupper(self::data('_method'));
-            unset(self::$data['_method']);
-            return $method;
-        } else {
-            return self::method(false);
-        }
     }
 
     protected static function current_header(): array

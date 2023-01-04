@@ -8,7 +8,7 @@ Gerencia a requisição atual
 
 **method**: Retorna o metodo interpretado da requisição atual
 
-    Request::method(bool $relative = true): string
+    Request::method(): string
 
 ---
 
