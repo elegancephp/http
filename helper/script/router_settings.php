@@ -1,5 +1,6 @@
 <?php
 
+use Elegance\Assets;
 use Elegance\Import;
 use Elegance\Router;
 
@@ -16,7 +17,17 @@ Router::actionPrefix(
 );
 
 Router::actionPrefix(
-    '=',
+    'import:',
     fn ($response) => Import::return($response),
     false
 );
+
+Router::actionPrefix(
+    'assets:',
+    fn ($response) => Assets::get($response),
+    true
+);
+
+Router::middleware('', 'elegance.response');
+
+Router::add('favicon.ico', 'assets:' . dirname(__DIR__, 2) . '/library/assets/favicon.ico');
