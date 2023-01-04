@@ -8,22 +8,45 @@ use Elegance\Interface\Middleware as InterfaceMiddleware;
 abstract class Middleware
 {
     protected static array $registred = [];
+    protected static array $queue = [];
 
-    /** Executa a lista de middlewares */
-    static function run(array $middlewares = [], mixed $action = null)
+    /** Adiciona uma middleware a fila de execução */
+    static function add(string $name, null|string|Closure $middleware = null)
     {
-        if (!is_closure($action))
-            $action = fn () => $action;
+        if ($middleware)
+            self::register($name, $middleware);
 
-        $middlewares[] = $action;
+        self::$queue[] = $name;
+    }
+
+    /** Remove uma middleware a fila de execução */
+    static function remove(string $name)
+    {
+        foreach (self::$queue as $pos => $middleware)
+            if ($middleware == $name)
+                unset(self::$queue[$pos]);
+    }
+
+    /** Registra uma middleware para ser chamada via string */
+    static function register(string $name, string|Closure $middleware)
+    {
+        self::$registred[$name] = $middleware;
+    }
+
+    /** Executa a fila de middlewares */
+    static function run(mixed $action = null)
+    {
+        if (!is_closure($action)) $action = fn () => $action;
+
+        $middlewares = [...self::$queue, $action];
 
         return self::execute($middlewares);
     }
 
-    /** Registra uma middleware para ser chamada via string */
-    static function register(string $name, Closure|string|array $middleware)
+    /** Retorna as middlewares na fila de execução */
+    static function queue()
     {
-        self::$registred[$name] = $middleware;
+        return self::$queue;
     }
 
     /** Execute uma fila de middlewares */
