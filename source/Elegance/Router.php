@@ -7,6 +7,8 @@ use Elegance\Trait\RouterAction;
 use Elegance\Trait\RouterData;
 use Elegance\Trait\RouterMiddleware;
 use Elegance\Trait\RouterUtil;
+use Error;
+use Exception;
 
 abstract class Router
 {
@@ -33,9 +35,9 @@ abstract class Router
 
                 if ($item == '_') {
                     $item = substr($item, 0, -1) . '...';
-                    self::middleware($item, "=$file");
+                    self::middleware($item, "import:$file");
                 } else {
-                    self::add($item, "=$file");
+                    self::add($item, "import:$file");
                 }
             }
         }
@@ -54,21 +56,32 @@ abstract class Router
     /** Executa a rota correspondente a URL atual */
     static function solve($autoSend = true)
     {
-        self::organize(self::$routes);
+        try {
+            self::organize(self::$routes);
 
-        $templateMatch = self::getTemplateMatch();
+            $templateMatch = self::getTemplateMatch();
 
-        list($routeParams, $routeResponse) = self::$routes[$templateMatch] ?? [null, STS_NOT_FOUND];
+            list($routeParams, $routeResponse) = self::$routes[$templateMatch] ?? [
+                null,
+                fn () => throw new Exception('route not found', STS_NOT_FOUND)
+            ];
 
-        self::setParamnsData($templateMatch, $routeParams);
+            self::setParamnsData($templateMatch, $routeParams);
 
-        self::setMiddlewares();
+            self::setMiddlewares();
 
-        $action = self::getAction($routeResponse);
+            $action = self::getAction($routeResponse);
 
-        $response = Middleware::run($action);
+            $response = Middleware::run($action);
 
-        $response = new Response($response);
+            $response = new Response($response);
+        } catch (Error | Exception  $e) {
+            $reponse = new Response();
+            $reponse->status(STS_INTERNAL_SERVER_ERROR);
+            $reponse->header('El-Error-Code', $e->getCode());
+            $reponse->header('El-Error-Type', 'throw');
+            $reponse->header('El-Error-Message', $e->getMessage());
+        }
 
         if ($autoSend)
             $response->send();

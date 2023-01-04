@@ -66,8 +66,8 @@ trait RouterMiddleware
                         if (str_starts_with($mod, '-')) {
                             $mod = substr($mod, 1);
                             Middleware::remove($mod);
-                        } else if (str_starts_with($mod, '=')) {
-                            Import::return(substr($mod, 1));
+                        } else if (str_starts_with($mod, 'import:')) {
+                            Import::return(substr($mod, 7));
                         } else {
                             Middleware::add($mod);
                         }
