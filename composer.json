@@ -21,11 +21,14 @@
             "helper/function/url.php",
             "helper/function/view.php",
             "helper/script/env.php",
+            "helper/script/router_action.php",
+            "helper/script/showError.php",
             "helper/script/view_prepare.php"
         ]
     },
     "require": {
         "elegance/core": "^2.0",
-        "elegance/mxcmd": "^2.0"
+        "elegance/mxcmd": "^2.0",
+        "elegance/cif-code": "^2.0"
     }
 }
