@@ -6,5 +6,6 @@ chdir(__DIR__);
 
 require './vendor/autoload.php';
 
-Router::add('','#Elegance HTTP ON');
+Router::add('', '#Elegance');
+
 Router::solve();
