@@ -3,6 +3,7 @@
 namespace Middleware\Elegance;
 
 use Closure;
+use Elegance\Exception\InputException;
 use Elegance\Instance\Response;
 use Error;
 use Exception;
@@ -19,6 +20,10 @@ class MdResponse
                 $reponse = $this->getResponseStatus($reponse, 'friendly');
 
             $reponse = new Response($reponse);
+        } catch (InputException $e) {
+            $reponse = $this->getResponseStatus($e->getCode(), $e->getMessage());
+            $reponse->type('json');
+            $reponse->content($e->getMessage());
         } catch (Exception | Error $e) {
             $reponse = $this->getResponseStatus($e->getCode(), $e->getMessage());
         }
