@@ -20,7 +20,7 @@ class InputField
 
     protected array $validate = [];
     protected array $sanitaze = [];
-    protected bool $forceSanitaze = false;
+    protected ?bool $forceSanitaze = null;
 
     function __construct(string $name, mixed $value)
     {
@@ -105,7 +105,7 @@ class InputField
     function sanitaze(Closure|int|bool $sanitaze): static
     {
         if (is_bool($sanitaze))
-            $this->forceSanitaze = $sanitaze;
+            $this->forceSanitaze = $sanitaze ? true : null;
         else
             $this->sanitaze[] = $sanitaze;
 
@@ -113,12 +113,14 @@ class InputField
     }
 
     /** Captura o valor do campo */
-    function get(bool $trow = true, bool $sanitaze = true): mixed
+    function get(bool $trow = true, ?bool $sanitaze = true): mixed
     {
         $error = $this->check($trow);
 
+        $sanitaze = $sanitaze ?? $this->forceSanitaze ?? true;
+
         if (!$error)
-            return $sanitaze || $this->forceSanitaze ? $this->applySanitaze($this->value) : $this->value;
+            return $sanitaze ? $this->applySanitaze($this->value) : $this->value;
 
         return null;
     }
