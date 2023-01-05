@@ -28,16 +28,16 @@ Verifica se uma variavel é um token JWT válido
 Utilize instancias de Jwt para criar ou decodificar tokens que não utilizem a chave pass padrão. 
 Defina o pass que a instancia deve utilizar no parametro **$pass**
 
-    $Jtw = new \Elegance\Instance\InstanceJwt($pass);
+    $Jwt = new \Elegance\Instance\InstanceJwt($pass);
 
 Retorna um token JWT com o conteúdo 
     
-    $Jtw->on(mixed $payload): string
+    $Jwt->on(mixed $payload): string
 
 Retorna o token conteúdo de um token JWT
     
-    $Jtw->off(string $token): mixed
+    $Jwt->off(string $token): mixed
 
 Verifica se uma variavel é um token JWT válido
     
-     $Jtw->check(mixed $var): bool
+     $Jwt->check(mixed $var): bool
