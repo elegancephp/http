@@ -10,17 +10,17 @@ class InputField
 {
     protected string $name;
     protected mixed $value;
-    protected mixed $sanitazeValue;
+
+    protected mixed $sanitazeValue = null;
 
     protected string $required;
+
     protected string $preventTag;
-
-    protected ?array $scapePrepare = [];
-
-    protected bool $checked = false;
+    protected ?array $scapePrepare;
 
     protected array $validate = [];
     protected array $sanitaze = [];
+    protected bool $forceSanitaze = false;
 
     function __construct(string $name, mixed $value)
     {
@@ -31,6 +31,7 @@ class InputField
 
         $this->required(true);
         $this->preventTag(true);
+        $this->scapePrepare(true);
     }
 
     /** Se o valor do input deve ser tratado com preventTag tags */
@@ -70,73 +71,103 @@ class InputField
     function validate(mixed $rule, ?string $message = null): static
     {
         if (is_closure($rule)) {
-            $this->validate[] = [$rule, $message];
+            $this->validate[] = [$rule, $message, [$this->name]];
         } else if (is_bool($rule)) {
             $this->required($message ?? $rule);
-        } else if (match ($rule) {
-            FILTER_VALIDATE_IP,
-            FILTER_VALIDATE_INT,
-            FILTER_VALIDATE_MAC,
-            FILTER_VALIDATE_URL,
-            FILTER_VALIDATE_EMAIL,
-            FILTER_VALIDATE_FLOAT,
-            FILTER_VALIDATE_DOMAIN,
-            FILTER_VALIDATE_REGEXP,
-            FILTER_VALIDATE_BOOLEAN => true,
-            default => false
-        }) {
+        } else if (
+            match ($rule) {
+                FILTER_VALIDATE_IP,
+                FILTER_VALIDATE_INT,
+                FILTER_VALIDATE_MAC,
+                FILTER_VALIDATE_URL,
+                FILTER_VALIDATE_EMAIL,
+                FILTER_VALIDATE_FLOAT,
+                FILTER_VALIDATE_DOMAIN,
+                FILTER_VALIDATE_REGEXP,
+                FILTER_VALIDATE_BOOLEAN => true,
+                default => false
+            }
+        ) {
             $message = $message ?? $rule;
             $rule = fn ($value) => filter_var($value, $rule);
-            $this->validate[] = [$rule, $message];
+            $this->validate[] = [$rule, $message, [$this->name]];
         } else if (is_class($rule, InputField::class)) {
-            $message = $message ?? 'O campo [#] deve ser igual o campo ' . $rule->name;
-            $rule = fn ($v) => $v == $rule->get();
-            $this->validate[] = [$rule, $message];
+            $message = $message ?? 'equal';
+            $equalName = $rule->name;
+            $rule = fn ($v) => $v == $rule->get(false, false);
+            $this->validate[] = [$rule, $message, [$this->name, $equalName]];
         }
 
-        $this->checked = false;
         return $this;
     }
 
     /** Define u modo de limpeza do campo */
-    function sanitaze(Closure|int $sanitaze): static
+    function sanitaze(Closure|int|bool $sanitaze): static
     {
-        $this->sanitaze[] = $sanitaze;
+        if (is_bool($sanitaze))
+            $this->forceSanitaze = $sanitaze;
+        else
+            $this->sanitaze[] = $sanitaze;
 
-        $this->checked = false;
         return $this;
     }
 
     /** Captura o valor do campo */
-    function get(): mixed
+    function get(bool $trow = true, bool $sanitaze = true): mixed
     {
-        if (!$this->checked) {
-            $this->checkValidate($this->value);
-            $this->checked = true;
-            $this->sanitazeValue = $this->applySanitaze($this->value);
-        }
-        return $this->sanitazeValue;
+        $error = $this->check($trow);
+
+        if (!$error)
+            return $sanitaze || $this->forceSanitaze ? $this->applySanitaze($this->value) : $this->value;
+
+        return null;
     }
 
-    /** Verifica todas as regras de valudação */
-    protected function checkValidate($value)
+    /** Verifica se o objeto passa nas regras de validação */
+    function check(bool $trow = true): string|bool
     {
+        $error = $this->runValidate();
+
+        if ($error) {
+            list($message, $prepare) = [...$error, [$this->name]];
+
+            $message = Input::message($message);
+
+            $message = prepare($message, $prepare);
+
+            if ($trow)
+                throw new InputException($message, STS_BAD_REQUEST);
+        }
+
+        return $message ?? false;
+    }
+
+    /** Executa as regras de validação retornando o array de erro */
+    protected function runValidate(): array|bool
+    {
+        $value = $this->value;
+
         if ($this->required && is_blank($value))
-            $this->error($this->required);
+            return [$this->required];
+
+        if (!$this->required && is_blank($value))
+            return false;
 
         $value = is_array($value) ? $value : [$value];
 
         foreach ($value as $v) {
             if ($this->preventTag)
                 if (is_string($v) && strip_tags($v) != $v)
-                    $this->error($this->preventTag);
+                    return [$this->preventTag];
 
             foreach ($this->validate as $validate) {
-                list($rule, $message) = $validate;
+                list($rule, $message, $prepare) = $validate;
                 if (!$rule($v))
-                    $this->error($message);
+                    return [$message, $prepare];
             }
         }
+
+        return false;
     }
 
     /** Aplica as funções de limpeza */
@@ -168,14 +199,5 @@ class InputField
                 $value = Prepare::scape($value, $this->scapePrepare);
         }
         return $value;
-    }
-
-    protected function error($message)
-    {
-        $message = Input::message($message);
-        $message = trim($message);
-        $message = prepare($message, $this->name);
-
-        throw new InputException($message, 400);
     }
 }
