@@ -33,7 +33,7 @@ abstract class Router
                 $item = str_replace(['_index'], '', $item);
                 $item = str_replace_all(['//'], '/', $item);
 
-                if ($item == '_') {
+                if (str_ends_with($item, '_')) {
                     $item = substr($item, 0, -1) . '...';
                     self::middleware($item, "import:$file");
                 } else {
