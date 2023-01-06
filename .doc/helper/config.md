@@ -9,10 +9,11 @@
 **RESPONSE_CACHE**: Tempo de cache para arquivos em horas
 
     RESPONSE_CACHE=null //Não altera o comportamento de cache
-    RESPONSE_CACHE=false //Não altera o comportamento de cache
     RESPONSE_CACHE=true //Não altera o comportamento de cache
+    
+    RESPONSE_CACHE=false //Bloqueia cache
+    RESPONSE_CACHE=0 //Bloqueia cache
 
-    RESPONSE_CACHE=0 //Não utiliza cache
     RESPONSE_CACHE=24 //Utiliza um cache de 24 horas
 
 **RESPONSE_CACHE_EXEMPLE**: Tempo de cache para arquivos de uma extensão [.exemple] em horas
