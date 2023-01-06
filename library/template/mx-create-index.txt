@@ -1,10 +1,12 @@
-[#PHP]
+<?php
 
 namespace Elegance;
 
 chdir(__DIR__);
 
 require './vendor/autoload.php';
+
+Middleware::add('elegance.response');
 
 Router::add('', '#Elegance');
 

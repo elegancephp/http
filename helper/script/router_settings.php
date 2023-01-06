@@ -28,6 +28,4 @@ Router::actionPrefix(
     true
 );
 
-Router::middleware('', 'elegance.response');
-
 Router::add('favicon.ico', 'assets:' . dirname(__DIR__, 2) . '/library/assets/favicon.ico');
