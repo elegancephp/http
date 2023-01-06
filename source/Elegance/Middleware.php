@@ -10,8 +10,13 @@ abstract class Middleware
     protected static array $queue = [];
 
     /** Adiciona uma middleware a fila de execução */
-    static function add(string $name, null|string|Closure $middleware = null)
+    static function add(string|Closure $name, null|string|Closure $middleware = null)
     {
+        if (is_closure($name)) {
+            $middleware = $name;
+            $name = md5(uniqid());
+        }
+
         if ($middleware)
             self::register($name, $middleware);
 

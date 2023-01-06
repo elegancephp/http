@@ -61,7 +61,7 @@ trait RouterMiddleware
             if ($check_and && $check_or)
                 foreach ($middlewares as $mod) {
                     if (is_closure($mod)) {
-                        Middleware::add(md5(uniqid()), $mod);
+                        Middleware::add($mod);
                     } else if (is_string($mod)) {
                         if (str_starts_with($mod, '-')) {
                             $mod = substr($mod, 1);
