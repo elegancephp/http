@@ -37,8 +37,6 @@ abstract class Assets
             throw new Exception("file not found", STS_NOT_FOUND);
 
         $response = new Response();
-
-        $response->cache(true);
         $response->content(Import::content($path));
         $response->type(File::getEx($path));
         $response->download(File::getOnly($path));

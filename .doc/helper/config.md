@@ -8,11 +8,19 @@
 
 **RESPONSE_CACHE**: Tempo de cache para arquivos em horas
 
+    RESPONSE_CACHE=null //Não altera o comportamento de cache
+    RESPONSE_CACHE=false //Não altera o comportamento de cache
+    RESPONSE_CACHE=true //Não altera o comportamento de cache
+
+    RESPONSE_CACHE=0 //Não utiliza cache
+    RESPONSE_CACHE=24 //Utiliza um cache de 24 horas
+
 **RESPONSE_CACHE_EXEMPLE**: Tempo de cache para arquivos de uma extensão [.exemple] em horas
 
     RESPONSE_CACHE_JPG=672
-    RESPONSE_CACHE_PDF=672
+    RESPONSE_CACHE_ICO=672
     RESPONSE_CACHE_ZIP=24
+    RESPONSE_CACHE_PDF=12
     RESPONSE_CACHE_...
 
 

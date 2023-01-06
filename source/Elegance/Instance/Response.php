@@ -12,7 +12,7 @@ class Response
     protected ?string $type = null;
     protected mixed $content = null;
 
-    protected null|int|bool $cache = 0;
+    protected null|int|bool $cache = null;
 
     protected bool $download = false;
     protected ?string $downloadName = null;
@@ -67,9 +67,6 @@ class Response
             $type = trim($type, '.');
             $type = strtolower($type);
             $type = EX_MIMETYPE[$type] ?? $type;
-
-            if (!substr_count(strtolower($type), 'charset='))
-                $type = "$type; charset=utf-8";
 
             $this->type = $type;
         }
@@ -174,17 +171,18 @@ class Response
     {
         $headerCache = [];
 
-        if (!is_null($this->cache)) {
-            if ($this->cache === true) {
-                $cacheEx = array_flip(EX_MIMETYPE)[$this->type] ?? null;
-                $this->cache = env(strtoupper("RESPONSE_CACHE_$cacheEx")) ?? env("RESPONSE_CACHE");
-            }
+        $cacheType = array_flip(EX_MIMETYPE)[$this->type] ?? null;
 
-            if ($this->cache) {
-                $this->cache = $this->cache * 60 * 60;
+        $cacheTime = $this->cache ?? env(strtoupper("RESPONSE_CACHE_$cacheType")) ?? env("RESPONSE_CACHE") ?? null;
+
+        if (is_bool($cacheTime)) $cacheTime = $cacheTime ? null : 0;
+
+        if (!is_null($cacheTime)) {
+            if ($cacheTime) {
+                $cacheTime = $cacheTime * 60 * 60;
                 $headerCache['Pragma'] = 'public';
-                $headerCache['Cache-Control'] = 'max-age=' . $this->cache;
-                $headerCache['Expires'] = gmdate('D, d M Y H:i:s', time() + $this->cache) . ' GMT';
+                $headerCache['Cache-Control'] = 'max-age=' . $cacheTime;
+                $headerCache['Expires'] = gmdate('D, d M Y H:i:s', time() + $cacheTime) . ' GMT';
             } else {
                 $headerCache['Pragma'] = 'no-cache';
                 $headerCache['Cache-Control'] = 'no-cache, no-store, must-revalidat';
@@ -192,13 +190,14 @@ class Response
             }
         }
 
-        return $headerCache;
+        return $headerCache ?? [];
     }
 
     /** Retorna cabeçalhos de tipo de conteúdo */
     protected function getMontedHeader_type(): array
     {
-        return ['Content-Type' => $this->type ?? EX_MIMETYPE['html']];
+        $type = $this->type ?? EX_MIMETYPE['html'];
+        return ['Content-Type' => "$type; charset=utf-8"];
     }
 
     /** Retorna cabeçalhos de download */
