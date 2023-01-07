@@ -47,6 +47,10 @@ Pode-se fornecer um segundo parametro para registrar e adicionar a middleware ao
 
     Middleware::add('name',function($next){...});
 
+Para adicionar uma middleware no inicio da na fila de execução, utilize o codigo abaixo
+
+    Middleware::addPre('middlewareName');
+
 Para remover uma middleware da fila de execução, utilize o codigo abaixo.
 
     Middleware::remove('middlewareName');

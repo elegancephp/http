@@ -23,6 +23,20 @@ abstract class Middleware
         self::$queue[] = $name;
     }
 
+    /** Adiciona uma middleware no inicio da fila de execução */
+    static function addPre(string|Closure $name, null|string|Closure $middleware = null)
+    {
+        if (is_closure($name)) {
+            $middleware = $name;
+            $name = md5(uniqid());
+        }
+
+        if ($middleware)
+            self::register($name, $middleware);
+
+        self::$queue = [$name, ...self::$queue];
+    }
+
     /** Remove uma middleware a fila de execução */
     static function remove(string $name)
     {
