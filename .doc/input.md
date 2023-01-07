@@ -116,11 +116,15 @@ Verifica se todos os campos do input passam nos testes de validação
 **data**
 Retorna um ou todos os valores do input
 
-    $input->data(bool|string $name = false);
+    $input->data(bool|string|array $name = false);
 
 > Se o parametro **name** for fornecido será retornado o valor de um campo especifico
 > Se o valor do **name** for **true** será retornado os valores de todos os campos
 > Se o valor do **name** for **false** será retornado apeanas os valores do campos recebidos
+
+Pode-se retornar apenas alguns valores do input, fornecendo um array no parametro name
+
+    $intut->data(['name', 'email']);
 
 **Exemplo de input geral**
 
