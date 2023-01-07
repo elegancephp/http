@@ -45,11 +45,18 @@ class Input
     }
 
     /** Retorna um ou todos os valores do input */
-    function data(bool|string $name = false)
+    function data(bool|string|array $name = false)
     {
         if (is_bool($name)) {
             $data = array_map(fn ($i) => $i->get(), $this->field);
             return $name ? $data : array_filter($data, fn ($v) => !is_null($v));
+        }
+
+        if (is_array($name)) {
+            $data = [];
+            foreach ($name as $item)
+                $data[$item] = $this->data($item);
+            return $data;
         }
 
         if (isset($this->field[$name]))
