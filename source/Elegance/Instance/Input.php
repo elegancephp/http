@@ -55,7 +55,7 @@ class Input
         if (is_array($name)) {
             $data = [];
             foreach ($name as $item)
-                $data[$item] = $this->data($item);
+                $data[] = $this->data($item);
             return $data;
         }
 
