@@ -19,6 +19,9 @@ class MdResponse
             if (is_int($reponse) && $reponse >= 200 && $reponse <= 599)
                 $reponse = $this->getResponseStatus($reponse, 'friendly');
 
+            if (is_array($reponse))
+                $reponse = (new Response($reponse))->type('json');
+
             $reponse = new Response($reponse);
         } catch (InputException $e) {
             $reponse = $this->getResponseStatus($e->getCode(), $e->getMessage());
