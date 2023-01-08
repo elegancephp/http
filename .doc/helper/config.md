@@ -1,10 +1,16 @@
 ### Helper config
 
+**IN_DEV**: Se o projeto está rodando em modo desenvolvedor
+
+    IN_DEV=false
+
 **SERVER_PORT**: Porta pardão para servidor embutido
 
+    SERVER_PORT=8333
 
 **FORCE_SSL**: Força a requisição a se comportar com um status especifico de SSL
 
+    FORCE_SSL=false
 
 **RESPONSE_CACHE**: Tempo de cache para arquivos em horas
 
@@ -24,9 +30,15 @@
     RESPONSE_CACHE_PDF=12
     RESPONSE_CACHE_...
 
-
 **PATH_VIEW**: Diretório onde se encontra as views
+
+    PATH_VIEW=view
 
 **VIEW_MINIFY**: Se o conteúdo das VIEWs deve ser minificado
 
-**PATH_ROUTE**: Diretório para os arquivos de rota
+    VIEW_MINIFY=true
+
+**JWT_PASS**: Chave para utilização de JWT
+
+    JWT_PASS=lpnwtvywyimwoswtmooxqwywpxnxrwoiig
+    

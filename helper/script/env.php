@@ -6,7 +6,7 @@ Env::default('IN_DEV', false);
 
 Env::default('SERVER_PORT', 8333);
 
-Env::default('RESPOSNE_DEFAULT', 'json');
+Env::default('RESPONSE_TYPE', 'json');
 
 Env::default('PATH_VIEW', 'view');
 

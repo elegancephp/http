@@ -196,7 +196,7 @@ class Response
     /** Retorna cabeçalhos de tipo de conteúdo */
     protected function getMontedHeader_type(): array
     {
-        $type = $this->type ?? EX_MIMETYPE['html'];
+        $type = $this->type ?? EX_MIMETYPE[env('RESPONSE_TYPE')] ?? EX_MIMETYPE['json'];
         return ['Content-Type' => "$type; charset=utf-8"];
     }
 
