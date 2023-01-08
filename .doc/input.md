@@ -126,9 +126,25 @@ Pode-se retornar varios valores do input
 
     $intut->data(['name', 'email']);
 
+    //return
+        [
+            'valor do campo name',
+            'valor do campo email'
+        ]
+
 Use o **list** do PHP para atrinutios os valores automáticamente
     
     list($name, $email) = $intut->data(['name', 'email']);
+
+Pode-se retornar varios valores do input combinando-os com as chaves do campo
+
+    $intut->data(['name', 'email'], true);
+
+    //return
+        [
+            'name' => 'valor do campo name',
+            'email' => 'valor do campo email'
+        ]
 
 **Exemplo de input geral**
 

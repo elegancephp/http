@@ -45,22 +45,29 @@ class Input
     }
 
     /** Retorna um ou todos os valores do input */
-    function data(bool|string|array $name = false)
+    function data(bool|string|array $ref = false)
     {
-        if (is_bool($name)) {
+        if (is_bool($ref)) {
             $data = array_map(fn ($i) => $i->get(), $this->field);
-            return $name ? $data : array_filter($data, fn ($v) => !is_null($v));
+            return $ref ? $data : array_filter($data, fn ($v) => !is_null($v));
         }
 
-        if (is_array($name)) {
+        if (is_array($ref)) {
             $data = [];
-            foreach ($name as $item)
-                $data[] = $this->data($item);
+
+            $refInKey = func_get_arg(1) ?? false;
+
+            foreach ($ref as $item)
+                if ($refInKey)
+                    $data[] = $this->data($item);
+                else
+                    $data[$item] = $this->data($item);
+
             return $data;
         }
 
-        if (isset($this->field[$name]))
-            return $this->field[$name]->get();
+        if (isset($this->field[$ref]))
+            return $this->field[$ref]->get();
 
         return null;
     }
