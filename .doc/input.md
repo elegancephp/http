@@ -122,9 +122,13 @@ Retorna um ou todos os valores do input
 > Se o valor do **name** for **true** será retornado os valores de todos os campos
 > Se o valor do **name** for **false** será retornado apeanas os valores do campos recebidos
 
-Pode-se retornar apenas alguns valores do input, fornecendo um array no parametro name
+Pode-se retornar varios valores do input
 
     $intut->data(['name', 'email']);
+
+Use o **list** do PHP para atrinutios os valores automáticamente
+    
+    list($name, $email) = $intut->data(['name', 'email']);
 
 **Exemplo de input geral**
 
