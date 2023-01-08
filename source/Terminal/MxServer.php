@@ -2,21 +2,15 @@
 
 namespace Terminal;
 
-use Elegance\File;
 use Elegance\MxCmd;
-use Exception;
 
 abstract class MxServer extends MxCmd
 {
-    protected static function execute($port = null, $file = 'index.php')
+    protected static function execute($port = null)
     {
         $port = $port ?? env('SERVER_PORT');
 
-        if ($file == 'index.php')
-            MxCmd::run('create.index');
-
-        if (!File::check($file))
-            throw new Exception("file [$file] not found");
+        MxCmd::run('create.index');
 
         MxCmd::show('-------------------------------------------------');
         MxCmd::show('| Iniciando servidor PHP');
@@ -26,6 +20,6 @@ abstract class MxServer extends MxCmd
         MxCmd::show('-------------------------------------------------');
         MxCmd::show('');
 
-        echo shell_exec("php -S 127.0.0.1:$port $file");
+        echo shell_exec("php -S 127.0.0.1:$port index.php");
     }
 }

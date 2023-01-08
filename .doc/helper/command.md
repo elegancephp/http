@@ -6,7 +6,7 @@
 
 ---
 
-**server**: Levanta um servidor de teste apontando para o arquivo index.php
+**server**: Levanta um servidor de teste apontando para o arquivo index.php na porta 8333
 
     php mx server
 
