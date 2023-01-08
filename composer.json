@@ -21,8 +21,8 @@
             "helper/function/url.php",
             "helper/function/view.php",
             "helper/script/env.php",
+            "helper/script/in_dev.php",
             "helper/script/router_settings.php",
-            "helper/script/showError.php",
             "helper/script/view_prepare.php"
         ]
     },

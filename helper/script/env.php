@@ -2,14 +2,14 @@
 
 use Elegance\Env;
 
-Env::default('SHOW_ERROR', null);
+Env::default('IN_DEV', false);
 
-Env::default('SERVER_PORT', 8081);
+Env::default('SERVER_PORT', 8333);
+
+Env::default('RESPOSNE_DEFAULT', 'json');
 
 Env::default('PATH_VIEW', 'view');
 
 Env::default('VIEW_MINIFY', true);
-
-Env::default('PATH_ROUTE', 'route');
 
 Env::default('JWT_PASS', 'lpnwtvywyimwoswtmooxqwywpxnxrwoiig');
