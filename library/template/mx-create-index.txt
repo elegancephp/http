@@ -4,6 +4,8 @@ namespace Elegance;
 
 chdir(__DIR__);
 
+date_default_timezone_set('America/Sao_Paulo');
+
 require './vendor/autoload.php';
 
 Middleware::add('elegance.cros');
