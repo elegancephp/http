@@ -17,7 +17,7 @@ Retorna um token JWT com o conteúdo
 
 Retorna o token conteúdo de um token JWT
     
-    Jwt::off(string $token): mixed
+    Jwt::off(mixed $token): mixed
 
 Verifica se uma variavel é um token JWT válido
     
