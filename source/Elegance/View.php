@@ -14,7 +14,7 @@ class View
     use ViewMap;
     use ViewPrepare;
 
-    static function render(string|array $viewRef, array $prepare = []): string
+    static function render(string|array $viewRef, array $prepare = [], ?bool $encaps = null): string
     {
         if (self::map($viewRef)) {
 
@@ -35,8 +35,7 @@ class View
                 $incorpScript = $script;
                 $script = '';
                 $incorp['this.script'] = function (bool $encaps = true) use ($incorpScript) {
-                    if ($encaps) $incorpScript = "<script>$incorpScript</script>";
-                    return $incorpScript;
+                    return $encaps ? "<script>$incorpScript</script>" : $incorpScript;
                 };
             }
 
@@ -44,19 +43,16 @@ class View
                 $incorpStyle = $style;
                 $style = '';
                 $incorp['this.style'] = function (bool $encaps = true) use ($incorpStyle) {
-                    if ($encaps) $incorpStyle = "<style>$incorpStyle</style>";
-                    return $incorpStyle;
+                    return $encaps ? "<style>$incorpStyle</style>" : $incorpStyle;
                 };
             }
 
-            if (!empty($incorp))
-                $content = prepare($content, $incorp);
+            if (!empty($incorp)) $content = prepare($content, $incorp);
 
-            if ($script)
-                $script = "<script>$script</script>";
-
-            if ($style)
-                $style = "<style>$style</style>";
+            if ($encaps ?? intval(boolval($content)) + intval(boolval($script)) + intval(boolval($style)) > 1) {
+                if ($script) $script = "<script>$script</script>";
+                if ($style) $style = "<style>$style</style>";
+            }
 
             $content = "$style$content$script";
 

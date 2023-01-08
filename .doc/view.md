@@ -6,7 +6,7 @@ Controla a criação de HTML CSS e JS
 
 ---
 
-    View::render(string $view,array|string $prepare): string;
+    View::render(string $view, array|string $prepare, ?bool:$encaps=null): string;
 
 ### Estrutura
 Uma **view**, é uma pasta que contem os arquivos para montar uma visualiação
@@ -37,4 +37,26 @@ Existe uma forma de adicionar Helper ou resposta a prepare especificos para view
 Para adicionar uma opção deve-se utilizar o metodo estatico abaixo
 
     View::prepare(string $name, mixed $response): void
+
+### Helpers padrão
+
+**view**: Carrega outra view
+
+    [#view:$viewRef,$encaps]
+
+**this.view**: Carrega outra view
+
+    [#this.view:$viewRef,$encaps]
+
+**this.script**: Carrega o conteúdo javascript da view atual
+
+    [#this.script:$encaps]
+
+**this.style**: Carrega o conteúdo css da view atual
+
+    [#this.style:$encaps]
+
+**url**: Chama uma URL baseando-se na URL atual
+
+    [#url:$parameters]
 
