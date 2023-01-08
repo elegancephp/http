@@ -33,8 +33,11 @@ class InstanceJwt
     }
 
     /** Retorna o token conteúdo de um token JWT */
-    function off(string $token): mixed
+    function off(mixed $token): mixed
     {
+        if (!is_stringable($token))
+            return false;
+
         $token = explode('.', $token);
         $header = $this->base64_decode_url($token[0]);
         $payload = $this->base64_decode_url($token[1]);
