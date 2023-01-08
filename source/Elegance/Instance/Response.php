@@ -17,7 +17,7 @@ class Response
     protected bool $download = false;
     protected ?string $downloadName = null;
 
-    function __construct(mixed $content = null, ?int $status = null,  array $header = [])
+    function __construct(mixed $content = null, ?int $status = null,  ?string $type = null)
     {
         if (is_class($content, static::class)) {
             $this->header = $content->header;
@@ -31,8 +31,7 @@ class Response
             $this->content($content);
         }
         $this->status($status);
-        $this->header($header);
-        $this->type(null);
+        $this->type($type);
     }
 
     function __toString()
