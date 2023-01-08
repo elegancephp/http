@@ -113,38 +113,49 @@ Verifica se todos os campos do input passam nos testes de validação
 > Caso as regras de validação não passem, e o metodo **trow** for definido como **false**, será retornado um array com todos os errros
 > Caso as regras passem, será retornado **true**
 
+# Capturando valores do campo
+
 **data**
-Retorna um ou todos os valores do input
+Retorna um valor do input
 
-    $input->data(bool|string|array $name = false);
+    $input->data(string|array  $name): mixed
 
-> Se o parametro **name** for fornecido será retornado o valor de um campo especifico
-> Se o valor do **name** for **true** será retornado os valores de todos os campos
-> Se o valor do **name** for **false** será retornado apeanas os valores do campos recebidos
+Para retronar o valor de um campo, passe o nome via parametro
 
-Pode-se retornar varios valores do input
+     $input->data($name);
 
-    $intut->data(['name', 'email']);
+Pode-se capturar o valor de varios campos ao mesmo tempo passando os nomes em um array
 
-    //return
-        [
-            'valor do campo name',
-            'valor do campo email'
-        ]
+    $input->data([$name1,$name2,$name3...]);
 
-Use o **list** do PHP para atrinutios os valores automáticamente
+O resultado é um array não relacional contento os valores dos campos
+
+    [
+        'valor1',
+        'valor2',
+        'valor3',
+        ...
+    ]
+
+Pode-se retornar varios valores do input com o metodo **dataValues**
+
+    $input->dataValues(bool|string|array $ref): array
+
+    $input->dataValues(false)// O valor de todos os campos com valores não nulos
+    $input->dataValues(true)// O valor de todos os campos
     
-    list($name, $email) = $intut->data(['name', 'email']);
+Pode-se capturar o valor de varios campos ao mesmo tempo passando os nomes em um array
+    
+    $data = $input->dataValues(['name', 'email']);
 
-Pode-se retornar varios valores do input combinando-os com as chaves do campo
+O resultado é um array relacional contento os valores dos campos
 
-    $intut->data(['name', 'email'], true);
-
-    //return
-        [
-            'name' => 'valor do campo name',
-            'email' => 'valor do campo email'
-        ]
+    [
+        'campo1' => 'valor1',
+        'campo2' => 'valor2',
+        'campo3' => 'valor3',
+        ...
+    ]
 
 **Exemplo de input geral**
 

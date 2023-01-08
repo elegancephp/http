@@ -44,32 +44,44 @@ class Input
         return $this->field[$name];
     }
 
-    /** Retorna um ou todos os valores do input */
-    function data(bool|string|array $ref = false)
+    /** Retorna um valor do input */
+    function data(string|array $ref): mixed
     {
-        if (is_bool($ref)) {
-            $data = array_map(fn ($i) => $i->get(), $this->field);
-            return $ref ? $data : array_filter($data, fn ($v) => !is_null($v));
-        }
+        if (func_num_args() > 1)
+            $ref = func_get_args();
 
         if (is_array($ref)) {
             $data = [];
 
-            $refInKey = func_get_arg(1) ?? false;
-
             foreach ($ref as $item)
-                if ($refInKey)
-                    $data[] = $this->data($item);
-                else
-                    $data[$item] = $this->data($item);
+                $data[] = $this->data($item);
 
             return $data;
         }
 
-        if (isset($this->field[$ref]))
-            return $this->field[$ref]->get();
+        return isset($this->field[$ref]) ? $this->field[$ref]->get() : null;
+    }
 
-        return null;
+    /** Retorna varios valores do input em forma de array*/
+    function dataValues(bool|string|array $ref): array
+    {
+        if (func_num_args() > 1)
+            $ref = func_get_args();
+
+        if (is_bool($ref)) {
+            $data = array_map(fn ($i) => $i->get(), $this->field);
+            $data = $ref ? $data : array_filter($data, fn ($v) => !is_null($v));
+            return $data;
+        }
+
+        $data = [];
+
+        $ref = is_array($ref) ? $ref : [$ref];
+
+        foreach ($ref as $item)
+            $data[$item] = $this->data($item);
+
+        return $data;
     }
 
     /** Executa a validação de todos os campos do Input retornando o resultado */
