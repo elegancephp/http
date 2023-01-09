@@ -15,21 +15,29 @@ class MdResponse
     {
         try {
             $reponse = $next();
+
             if (is_int($reponse) && $reponse >= 200 && $reponse <= 599)
                 throw new Exception('friendly', $reponse);
+
             if (is_array($reponse) || is_json($reponse))
                 $reponse = (new Response($reponse))->type('json');
+
             $reponse = new Response($reponse);
-        } catch (InputException $e) {
-            $reponse = new Response();
-            $reponse->status($this->getHttpStatus($e->getCode(), STS_BAD_REQUEST));
-            $reponse->type('json');
-            $reponse->content($e->getMessage());
         } catch (Exception | Error $e) {
             $reponse = new Response();
-            $reponse->status($this->getHttpStatus($e->getCode(), STS_BAD_REQUEST));
+
+            $reponse->status($this->getHttpStatus($e->getCode(), STS_INTERNAL_SERVER_ERROR));
+
             $reponse->header('El-Status-Code', $e->getCode());
             $reponse->header('El-Status-Message', $e->getMessage());
+
+            if (env('IN_DEV')) {
+                $reponse->header('El-Status-File', str_replace(getcwd(), '', $e->getFile()));
+                $reponse->header('El-Status-Line', $e->getLine());
+            }
+
+            $reponse->type('json');
+            $reponse->content($e->getMessage());
         }
         return $reponse;
     }
