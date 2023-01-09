@@ -50,7 +50,7 @@ class Input
             if (!$this->field($fieldName)->check(false))
                 $this->error[$fieldName] = $this->field($fieldName)->error();
 
-        $check = empty($this->error);
+        $check = is_blank($this->error);
 
         if (!$check && $throw)
             throw new InputException(json_encode($this->error));
@@ -61,7 +61,7 @@ class Input
     /** Retorna o arrray com as mensagens de erro do input */
     function error(): ?array
     {
-        return empty($this->error) ? null : $this->error;
+        return is_blank($this->error) ? null : $this->error;
     }
 
     /** Retorna os valores dos campos do input */

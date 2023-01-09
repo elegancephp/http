@@ -44,7 +44,7 @@ class InputField
     function __construct(string $name, mixed $value = null)
     {
         $this->name = $name;
-        $this->value = empty($value) ? null : $value;
+        $this->value = is_blank($value) ? null : $value;
 
         $this->preventTag(true);
         $this->scapePrepare(true);
