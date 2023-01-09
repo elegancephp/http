@@ -94,6 +94,8 @@ class InputField
             $this->validate[] = [fn ($value) => filter_var($value, $rule), [$message ?? $rule]];
         } elseif (is_class($rule, static::class)) {
             $this->validate[] = [fn ($v) => $v == $rule->value, [$message ?? 'equal', ['equal' => $rule->name]]];
+        } elseif (is_closure($rule)) {
+            $this->validate[] = [$rule, [$message ?? 'default']];
         } elseif ($rule == FILTER_VALIDATE_INT) {
             $this->validate[] = [fn ($value) => intval($value) == $value, [$message ?? $rule]];
         } elseif ($rule == FILTER_VALIDATE_FLOAT) {
