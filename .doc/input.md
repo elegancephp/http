@@ -3,170 +3,42 @@ Formata dados de inserção do sistema
 
     use \Elegance\Instance\Input;
 
-    $input = new Input();
+    $input = new Input($data);
 
-### Definindo o input data
-Por padrão, a classe utiliza os dados de **Request:body()**
-Isso pode ser alterado, informando o parametro **inputData**
+Caso o parametro $data não for informado, o input utiliza o valor de **Request::data()**
 
+Para adicionar campos utilize o metodo **feild**
 
-    $input = new Input(Request:body());
-    
-    $input = new Input(Request:data());
-    
-    $input = new Input([
-        'usuario'=>'contatoadmx@gmail.com',
-        'senha'=>1234
-    ]);
+    $input->field($name, $alias) : InputField
 
-### Criando campos de verificação
-Crie um campo de verificação utilizando o metodo **field**
+* O paraemtro $name é o nome do campo
+* O parametro $alias é o nome que deve ser usado em mensagens de erro
 
-    $field = $input->field($name, $alias = null);
+> Este metod retorna uma instancia [InputField](https://github.com/elegancephp/http/tree/main/.doc/inputfield.md)
 
-Este metodo retorna uma instancia de Field. Utilize esta intancia para personalizar o campo
+Para adicioanr varios campos de uma vez, utilize o metodo **feilds**
 
----
+    $input->fields('nameField1','nameField2',...);
 
-**validate**: Adiciona uma regra de validação ao campo
-    
-    $field->validate(mixed $rule, ?string $message = null): self
+> Os campos adicionados via **fields** não farão uso do **alias**
 
-O parametro **rule** define a regra de validação.
-Defina como **bool** para maracar o campo como obrigatório ou não.
+**Utilização**
 
-    $field->validate(true);
+**get**: Recupera o valor de todos os campos do input, ou lança uma **InputException** em caso de erro
 
-Defina como **string** para verificar se o campo é igual a outro campo do input
+    $input->get();
 
-    $field->validate('senha');
+**get**: Recupera o valor dos campos recebidos do input, ou lança uma **InputException** em caso de erro
 
-Defina como um **FILTER_VALIDATE** para aplica-lo automaticament
+    $input->getRecived();
 
-    $field->validate(FILTER_VALIDATE_EMAIL);
+**check**: Vefifica se todos os campos do input passam nas regras de validação
 
-Defina como **Clousure** para definir uma validação personalizada
+    $input->check($throw=true);
 
-    $field->validate(fn($value)=>$value>=10);
+    $input->check(false); // Retorna o valor booleano
+    $input->check(true); // Lança InputException em caso de erro
 
-O campo **message** é a mensagem que deve ser lançada caso a validação não passe. 
-Ele aplica automaticamente um prepare com o alias do campo
+**error**: Recupera o array com as mensagens de de erro
 
-    $field->validate(true, 'O campo [#] deve ser informado');
-
----
-
-**sanitaze**: Adiciona regras de senitização ao campo
-    
-    $field->sanitaze(mixed $sanitaze): self
-
-O sanitaze é aplicado ao valor do campo, caso todas as regras de validações passem
-Informe um **FILTER_SANITIZE** do PHP ou uma **Clousure** personalizada
-
-    $field->sanitaze(FILTER_SANITIZE_EMAIL);
-    $field->sanitaze(fn($value)=>strtolower($value));
-
-O valor do campo será sanitizado apenas se passar nos teste de validação. Alterar este comportamento, defina sanizate(true)
-
-    $field->sanitaze(true)
-
-### Tratamento individual de campos
-
-**check**
-Para validar um campo especifico, utilize o metodo **get**
-
-    $field->check(bool $trow = true);
-
-> Caso as regras de validações não passem, e o metodo **trow** for definido como **true**, será lançado uma Exception 400
-> Caso as regras de validação não passem, e o metodo **trow** for definido como **false**, a mensagem de erro será retornada
-> Caso o valor do campo for um array, a validação é aplicada individualmente a cada item do array
-
-**get**: Retorna o valor do campo
-    
-    $field->get(bool $trow = true, bool $sanitaze = true): mixed
-
-O parametro **trow** será aplicado ao **check** do campo. 
-O parametros **sanitaze** define se o campo deve ser sanitizado antes de ser retornado.
-
-**Exemplo de inputs com tratamento individual**
-
-    $input = new Input;
-
-    $email = $input->field('email','Email')
-                ->validate(FILTER_VALIDATE_EMAIL)
-                ->sanitaze(FILTER_SANITIZE_EMAIL)
-                ->get();
-
-    $senha = $input->field('pass','Senha')->get();
-
-    dd($email,$senha);
-
-### Tratamento geral de campos
-Para tratar os campos de forma geral, itulize o objeto $input
-
-**check**
-Verifica se todos os campos do input passam nos testes de validação
-
-    $input->check(bool $trow = true): array|bool
-
-> Caso as regras de validações não passem, e o metodo **trow** for definido como **true**, será lançado uma Exception 400 com todos os erros
-> Caso as regras de validação não passem, e o metodo **trow** for definido como **false**, será retornado um array com todos os errros
-> Caso as regras passem, será retornado **true**
-
-# Capturando valores do campo
-
-**data**
-Retorna um valor do input
-
-    $input->data(string|array  $name): mixed
-
-Para retronar o valor de um campo, passe o nome via parametro
-
-     $input->data($name);
-
-Pode-se capturar o valor de varios campos ao mesmo tempo passando os nomes em um array
-
-    $input->data([$name1,$name2,$name3...]);
-
-O resultado é um array não relacional contento os valores dos campos
-
-    [
-        'valor1',
-        'valor2',
-        'valor3',
-        ...
-    ]
-
-Pode-se retornar varios valores do input com o metodo **dataValues**
-
-    $input->dataValues(bool|string|array $ref): array
-
-    $input->dataValues(false)// O valor de todos os campos com valores não nulos
-    $input->dataValues(true)// O valor de todos os campos
-    
-Pode-se capturar o valor de varios campos ao mesmo tempo passando os nomes em um array
-    
-    $data = $input->dataValues(['name', 'email']);
-
-O resultado é um array relacional contento os valores dos campos
-
-    [
-        'campo1' => 'valor1',
-        'campo2' => 'valor2',
-        'campo3' => 'valor3',
-        ...
-    ]
-
-**Exemplo de input geral**
-
-    $input = new Input;
-
-    $input->field('email','Email')
-                ->validate(FILTER_VALIDATE_EMAIL)
-                ->sanitaze(FILTER_SANITIZE_EMAIL);
-
-    $senha = $input->field('pass','Senha');
-
-    $input->check();
-
-    dd($input->data('email'), $input->data('senha'));
+    $feild->error() :?srting
