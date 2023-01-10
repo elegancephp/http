@@ -64,13 +64,25 @@ class Input
         return is_blank($this->error) ? null : $this->error;
     }
 
-    /** Retorna os valores dos campos do input */
-    function get(null|string|array $fields = null)
+    /** Retorna o valor de um ou mais campos do input */
+    function get(string|array $fields): mixed
+    {
+        $data = $this->data(...func_get_args());
+
+        if (count($data) == 1) $data = array_shift($data);
+
+        return $data;
+    }
+
+    /** Retorna os valores dos campos do input em forma de array */
+    function data(null|string|array $fields = null): array
     {
         if (!is_array($fields) && func_num_args() > 1)
             $fields = func_get_args();
 
-        $fields = array_values($fields ?? array_keys($this->field));
+        $fields = $fields ?? array_keys($this->field);
+        $fields = is_array($fields) ? $fields : [$fields];
+        $fields = array_values($fields);
 
         foreach ($fields as $fieldName)
             $this->field($fieldName);
@@ -84,10 +96,10 @@ class Input
         return $data;
     }
 
-    /** Retorna os valores dos campos recebidos do input */
-    function getRecived(null|string|array $fields = null)
+    /** Retorna os valores dos campos recebidos do input em forma de array */
+    function dataRecived(null|string|array $fields = null): array
     {
-        $data = $this->get(...func_get_args());
+        $data = $this->data(...func_get_args());
 
         foreach (array_keys($data) as $fieldName)
             if (!$this->field($fieldName)->recived())

@@ -24,13 +24,35 @@ Para adicioanr varios campos de uma vez, utilize o metodo **feilds**
 
 **Utilização**
 
-**get**: Recupera o valor de todos os campos do input, ou lança uma **InputException** em caso de erro
+**get**: Retorna o valor de um ou mais campos do input
 
-    $input->get();
+    // Recuperar o valor de um campo 'value'
+    $input->get('fieldName'); 
 
-**get**: Recupera o valor dos campos recebidos do input, ou lança uma **InputException** em caso de erro
+    // Recuperar os valores de varios campos ['value1','value2',...]
+    $input->get(['name1','name2',...]);
+    ou 
+    $input->get('name1','name2',...); 
 
-    $input->getRecived();
+**data** Retorna os valores dos campos do input em forma de array
+
+    // Recuperar o valor de todos os campos ['name'=>'value']
+    $input->data();
+
+    // Recuperar o valor de alguns campos ['name1'=>'value1','name2'=>'value2',...]
+    $input->data(['name1','name2',...]);
+    ou
+    $input->data('name1','name2',...);
+
+**data** Retorna os valores dos campos recebidos do input em forma de array
+
+    // Recuperar o valor de todos os campos recebidos ['name'=>'value']
+    $input->data();
+
+    // Recuperar o valor de alguns campos recebidos ['name1'=>'value1','name2'=>'value2',...]
+    $input->data(['name1','name2',...]);
+    ou
+    $input->data('name1','name2',...);
 
 **check**: Vefifica se todos os campos do input passam nas regras de validação
 
