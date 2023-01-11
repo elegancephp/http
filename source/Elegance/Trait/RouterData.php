@@ -40,11 +40,11 @@ trait RouterData
         foreach ($template as $part) {
             if ($part != '...') {
                 $value = array_shift($uri) ?? '';
-                if (in_array($part, ['#', '!', '%', '$', '-'])) {
+                if (in_array($part, ['#', '@', '%', '$', '&'])) {
                     $value = match ($part) {
-                        '!' => intval($value),
+                        '@' => intval($value),
                         '%' => floatval($value),
-                        '-' => str_replace(' ', '+', $value),
+                        '&' => str_replace(' ', '+', $value),
                         default => $value
                     };
                     $name = array_shift($params) ?? '';

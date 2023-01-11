@@ -52,11 +52,11 @@ Para nomear os parametros dinamicos, pasta adicionar um nome ao **[#]**
 Para filtrar o tipo de parametro da URL, utilize os templates **[#]**, **[!]**, **[%]**, **[$]**, **[-]**
 
     Router::add('[#var]',...) // Qualquer variavel
-    Router::add('[!var]',...) // Variaveis do tipo INT
+    Router::add('[@var]',...) // Variaveis do tipo INT
     Router::add('[%var]',...) // Variaveis do tipo INT e FLOAT
     Router::add('[$var]',...) // Variaveis de strings codificadas
-    Router::add('[-var]',...) // Variaveis de strings cifradas
-    Router::add('[=var]') // O mesmo que a rota fiza var
+    Router::add('[&var]',...) // Variaveis de strings cifradas
+    Router::add('[=var]') // O mesmo que a rota fixa var
 
 Os parametros nomeados, tambem podem ser recuperados da mesma forma dos não nomeados. Estes são tambem adicionados diretamente ao **data** da **Router**
 

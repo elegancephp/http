@@ -19,8 +19,8 @@ trait RouterUtil
         $route = str_replace('[', '[#', $route);
 
         $route = str_replace(
-            ['[##', '[#!', '[#%', '[#=', '[#$', '[#-'],
-            ['[#', '[!', '[%', '[=', '[$', '[-'],
+            ['[##', '[#@', '[#%', '[#$', '[#&', '[#='],
+            ['[#', '[@', '[%', '[$', '[&', '[='],
             $route
         );
 
@@ -41,13 +41,13 @@ trait RouterUtil
             if (
                 str_starts_with($param, '[#')
                 ||
-                str_starts_with($param, '[!')
+                str_starts_with($param, '[@')
                 ||
                 str_starts_with($param, '[%')
                 ||
                 str_starts_with($param, '[$')
                 ||
-                str_starts_with($param, '[-')
+                str_starts_with($param, '[&')
             ) {
                 $template[$n] = substr($param, 1, 1);
                 $params[] = substr($param, 2, -1);
@@ -77,13 +77,13 @@ trait RouterUtil
             if ($recebido != $esperado) {
                 if (is_blank($recebido)) return $esperado == '...';
 
-                if ($esperado == '!') return is_numeric($recebido) && intval($recebido) == $recebido;
+                if ($esperado == '@') return is_numeric($recebido) && intval($recebido) == $recebido;
 
                 if ($esperado == '%') return is_numeric($recebido);
 
                 if ($esperado == '$') return Code::check($recebido);
 
-                if ($esperado == '-') return Cif::check($recebido);
+                if ($esperado == '&') return Cif::check($recebido);
 
                 if ($esperado != '#' && $esperado != '...') return false;
             }
@@ -115,19 +115,19 @@ trait RouterUtil
 
             for ($i = 0; $i < $max; $i++) {
                 $na .= match (true) {
-                    (($arrayA[$i] ?? '!') == '!') => '1',
+                    (($arrayA[$i] ?? '@') == '@') => '1',
                     (($arrayA[$i] ?? '%') == '%') => '2',
                     (($arrayA[$i] ?? '$') == '$') => '6',
-                    (($arrayA[$i] ?? '-') == '-') => '7',
+                    (($arrayA[$i] ?? '&') == '&') => '7',
                     (($arrayA[$i] ?? '#') == '#') => '8',
                     (($arrayA[$i] ?? '') == '...') => '9',
                     default => '0'
                 };
                 $nb .= match (true) {
-                    (($arrayB[$i] ?? '!') == '!') => '1',
+                    (($arrayB[$i] ?? '@') == '@') => '1',
                     (($arrayB[$i] ?? '%') == '%') => '2',
                     (($arrayB[$i] ?? '$') == '$') => '6',
-                    (($arrayB[$i] ?? '-') == '-') => '7',
+                    (($arrayB[$i] ?? '&') == '&') => '7',
                     (($arrayB[$i] ?? '#') == '#') => '8',
                     (($arrayB[$i] ?? '') == '...') => '9',
                     default => '0'
